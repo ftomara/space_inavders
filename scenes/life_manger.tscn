@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk00b2sti0c4j"]
+
+[ext_resource type="Script" path="res://scenes/life_manger.gd" id="1_cq26h"]
+
+[node name="LifeManger" type="Node"]
+script = ExtResource("1_cq26h")

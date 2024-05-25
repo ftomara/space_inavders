@@ -1,0 +1,128 @@
+[gd_scene load_steps=18 format=3 uid="uid://c4e7ux334lk1p"]
+
+[ext_resource type="Script" path="res://scenes/invader.gd" id="1_3n8yg"]
+[ext_resource type="Texture2D" uid="uid://dy2h5dklc8h7p" path="res://Assets/Invaders/Invader1-1.png" id="1_ytgb6"]
+[ext_resource type="Texture2D" uid="uid://b06nkmo0fwryx" path="res://Assets/Invaders/Invader1-2.png" id="3_mr2nd"]
+[ext_resource type="Texture2D" uid="uid://bn227mp3yqjlo" path="res://Assets/Invaders/Invader2-1.png" id="4_mvkx3"]
+[ext_resource type="Texture2D" uid="uid://gf81hnr41a4c" path="res://Assets/Invaders/Invader2-2.png" id="5_lysr5"]
+[ext_resource type="Texture2D" uid="uid://m4ub6oll4ikv" path="res://Assets/Invaders/Invader3-1.png" id="6_f0qiy"]
+[ext_resource type="Texture2D" uid="uid://bfg1tahjcdwb4" path="res://Assets/Invaders/Invader3-2.png" id="7_2485q"]
+[ext_resource type="Texture2D" uid="uid://ctu8snp11c12t" path="res://Assets/Invaders/Invader-explosion-1.png" id="8_xnv2w"]
+[ext_resource type="Texture2D" uid="uid://dcoy6mphlfi8i" path="res://Assets/Invaders/Invader-explosion-2.png" id="9_055w0"]
+[ext_resource type="AudioStream" uid="uid://byv1vae8hwui0" path="res://Audio/ehh.mp3" id="10_ph3gg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6w3qe"]
+radius = 4.0
+
+[sub_resource type="Animation" id="Animation_inaqo"]
+length = 0.001
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_ytgb6")]
+}
+
+[sub_resource type="Animation" id="Animation_7e2bx"]
+resource_name = "destroy"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("8_xnv2w"), ExtResource("9_055w0")]
+}
+
+[sub_resource type="Animation" id="Animation_bffad"]
+resource_name = "move_1"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("1_ytgb6"), ExtResource("3_mr2nd")]
+}
+
+[sub_resource type="Animation" id="Animation_sn07q"]
+resource_name = "move_2"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_mvkx3"), ExtResource("5_lysr5")]
+}
+
+[sub_resource type="Animation" id="Animation_i1i05"]
+resource_name = "move_3"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("6_f0qiy"), ExtResource("7_2485q")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g38ga"]
+_data = {
+"RESET": SubResource("Animation_inaqo"),
+"destroy": SubResource("Animation_7e2bx"),
+"move_1": SubResource("Animation_bffad"),
+"move_2": SubResource("Animation_sn07q"),
+"move_3": SubResource("Animation_i1i05")
+}
+
+[node name="Invader" type="Area2D"]
+scale = Vector2(4, 4)
+collision_layer = 4
+collision_mask = 34
+script = ExtResource("1_3n8yg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_ytgb6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6w3qe")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_g38ga")
+}
+speed_scale = 0.748
+
+[node name="invader_destraction" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_ph3gg")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

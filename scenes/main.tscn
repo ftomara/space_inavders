@@ -1,0 +1,101 @@
+[gd_scene load_steps=15 format=3 uid="uid://b5dysq5bkfuwy"]
+
+[ext_resource type="PackedScene" uid="uid://di4m1bxxvpe5f" path="res://scenes/player.tscn" id="1_12asw"]
+[ext_resource type="PackedScene" uid="uid://ph6a3ngjum2h" path="res://scenes/bulletcatcher.tscn" id="2_bkb42"]
+[ext_resource type="PackedScene" uid="uid://btfiih8ww3xb5" path="res://scenes/invaderspawner.tscn" id="3_yhgyk"]
+[ext_resource type="PackedScene" uid="uid://d177fkx1fe2ng" path="res://scenes/ufo_spwaner.tscn" id="4_gsll4"]
+[ext_resource type="PackedScene" uid="uid://sk3etxuq6f3n" path="res://scenes/bunker.tscn" id="5_wg33k"]
+[ext_resource type="PackedScene" uid="uid://dk00b2sti0c4j" path="res://scenes/life_manger.tscn" id="6_pkkms"]
+[ext_resource type="PackedScene" uid="uid://bc5h1jp7mjqf0" path="res://scenes/points_counter.tscn" id="7_517kx"]
+[ext_resource type="PackedScene" uid="uid://cvncelqibkxh4" path="res://scenes/ui.tscn" id="8_g8tn6"]
+[ext_resource type="AudioStream" uid="uid://b7dumvq2nakgs" path="res://Audio/RPReplay_Final1709900853%202.mp3" id="9_b1w1r"]
+[ext_resource type="AudioStream" uid="uid://ls4cwjqwr0fr" path="res://Audio/small-explosion-129477.mp3" id="10_wsy65"]
+[ext_resource type="AudioStream" uid="uid://dljsbxsc580ro" path="res://Audio/success-fanfare-trumpets-6185.mp3" id="11_i2wg3"]
+[ext_resource type="AudioStream" uid="uid://dfyl6r3bvi7fo" path="res://Audio/8-bit-video-game-fail-version-2-145478.mp3" id="12_4mfiq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fn8f1"]
+size = Vector2(7, 651)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5pm3x"]
+size = Vector2(1085, 62)
+
+[node name="main" type="Node"]
+
+[node name="player" parent="." instance=ExtResource("1_12asw")]
+position = Vector2(2.08165e-12, 302)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="bulletcatcher" parent="." instance=ExtResource("2_bkb42")]
+
+[node name="invaderspawner" parent="." instance=ExtResource("3_yhgyk")]
+position = Vector2(0, -149)
+
+[node name="walls" type="Node" parent="."]
+
+[node name="Rightwall" type="Area2D" parent="walls"]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="walls/Rightwall"]
+position = Vector2(575, -3.5)
+shape = SubResource("RectangleShape2D_fn8f1")
+
+[node name="Leftwall" type="Area2D" parent="walls"]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="walls/Leftwall"]
+position = Vector2(-575, -6)
+shape = SubResource("RectangleShape2D_fn8f1")
+
+[node name="Bottomwall" type="Area2D" parent="walls"]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="walls/Bottomwall"]
+position = Vector2(2, 286)
+shape = SubResource("RectangleShape2D_5pm3x")
+
+[node name="UfoSpwaner" parent="." instance=ExtResource("4_gsll4")]
+position = Vector2(546, -253)
+
+[node name="Bunker" parent="." instance=ExtResource("5_wg33k")]
+position = Vector2(-376, 174)
+scale = Vector2(4, 4)
+
+[node name="Bunker2" parent="." instance=ExtResource("5_wg33k")]
+position = Vector2(-144, 174)
+scale = Vector2(4, 4)
+
+[node name="Bunker3" parent="." instance=ExtResource("5_wg33k")]
+position = Vector2(144, 174)
+scale = Vector2(4, 4)
+
+[node name="Bunker4" parent="." instance=ExtResource("5_wg33k")]
+position = Vector2(376, 174)
+scale = Vector2(4, 4)
+
+[node name="LifeManger" parent="." instance=ExtResource("6_pkkms")]
+
+[node name="PointsCounter" parent="." instance=ExtResource("7_517kx")]
+
+[node name="UI" parent="." instance=ExtResource("8_g8tn6")]
+
+[node name="loser" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_b1w1r")
+
+[node name="explosion" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_wsy65")
+volume_db = -4.628
+pitch_scale = 0.47
+
+[node name="winner" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_i2wg3")
+
+[node name="lifelost" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_4mfiq")
+
+[connection signal="area_entered" from="walls/Rightwall" to="invaderspawner" method="_on_rightwall_area_entered"]
+[connection signal="area_entered" from="walls/Leftwall" to="invaderspawner" method="_on_leftwall_area_entered"]
+[connection signal="area_entered" from="walls/Bottomwall" to="invaderspawner" method="_on_bottomwall_area_entered"]

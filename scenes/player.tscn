@@ -1,0 +1,79 @@
+[gd_scene load_steps=13 format=3 uid="uid://di4m1bxxvpe5f"]
+
+[ext_resource type="Texture2D" uid="uid://dt0af4o7yh41a" path="res://Assets/Player/Player.png" id="1_4ev64"]
+[ext_resource type="Script" path="res://scenes/player.gd" id="1_rbaef"]
+[ext_resource type="Script" path="res://scenes/shootOrigin.gd" id="3_lli01"]
+[ext_resource type="PackedScene" uid="uid://c8swc2d7hgiyh" path="res://scenes/laser.tscn" id="4_c7ais"]
+[ext_resource type="Texture2D" uid="uid://bi2vdab3slwgf" path="res://Assets/Player/Player-explosion1.png" id="5_ncpmf"]
+[ext_resource type="Texture2D" uid="uid://b4mk25ro2nqtu" path="res://Assets/Player/Player-explosion2.png" id="6_3nmjn"]
+[ext_resource type="Texture2D" uid="uid://dsg2krqtkgnca" path="res://Assets/Player/Player-explosion3.png" id="7_l70j6"]
+[ext_resource type="AudioStream" uid="uid://3dqkjsvhq5ua" path="res://Audio/9mm-pistol-shot-6349.mp3" id="8_aeida"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwlxb"]
+size = Vector2(13, 4.5)
+
+[sub_resource type="Animation" id="Animation_3xr12"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_4ev64")]
+}
+
+[sub_resource type="Animation" id="Animation_byobu"]
+resource_name = "destroy"
+length = 2.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.5001, 0.75, 1, 1.0001, 1.25, 1.5, 1.75, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("5_ncpmf"), ExtResource("6_3nmjn"), ExtResource("1_4ev64"), ExtResource("7_l70j6"), ExtResource("5_ncpmf"), ExtResource("1_4ev64"), ExtResource("6_3nmjn"), ExtResource("7_l70j6"), ExtResource("5_ncpmf"), ExtResource("6_3nmjn"), ExtResource("7_l70j6")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ovip"]
+_data = {
+"RESET": SubResource("Animation_3xr12"),
+"destroy": SubResource("Animation_byobu")
+}
+
+[node name="player" type="Area2D"]
+scale = Vector2(4, 4)
+script = ExtResource("1_rbaef")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_4ev64")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.08165e-12, 1.75)
+shape = SubResource("RectangleShape2D_nwlxb")
+
+[node name="shootOrigin" type="Node2D" parent="."]
+position = Vector2(0, -4)
+script = ExtResource("3_lli01")
+laser_scene = ExtResource("4_c7ais")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4ovip")
+}
+
+[node name="shotgun" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_aeida")
+volume_db = -2.098
+pitch_scale = 2.91
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

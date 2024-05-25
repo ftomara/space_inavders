@@ -1,0 +1,90 @@
+[gd_scene load_steps=3 format=3 uid="uid://h1gd1a4twshw"]
+
+[ext_resource type="FontFile" uid="uid://ch103gi2tob72" path="res://Assets/font/andina.ttf" id="2_bvpn6"]
+
+[sub_resource type="GDScript" id="GDScript_0bnns"]
+script/source = "extends CanvasLayer
+
+@onready var game_over_label = %GameOverLabel
+@onready var game_over_button = %GameOverButton
+@onready var game_over_container = $MarginContainer/GameOverContainer
+@onready var loser = $\"../loser\"
+@onready var winner = $\"../winner\"
+
+
+func game_lost():
+	game_over_container.visible = true
+	loser.play()
+
+	
+func game_won():
+	game_over_label.text = \"YOU WON!\"
+	game_over_label.add_theme_color_override(\"font_color\" , Color.MEDIUM_PURPLE)	
+	game_over_container.visible = true	
+	winner.play()
+"
+
+[node name="endscreen" type="CanvasLayer"]
+script = SubResource("GDScript_0bnns")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOverContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="GameOverBox" type="VBoxContainer" parent="MarginContainer/GameOverContainer"]
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="MarginContainer/GameOverContainer/GameOverBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_bvpn6")
+theme_override_font_sizes/font_size = 60
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="restartquestion" type="Label" parent="MarginContainer/GameOverContainer/GameOverBox"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_bvpn6")
+theme_override_font_sizes/font_size = 40
+text = "Do You Want to restart?"
+
+[node name="choicebox" type="HBoxContainer" parent="MarginContainer/GameOverContainer/GameOverBox"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/GameOverContainer/GameOverBox/choicebox"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="yes_button" type="Button" parent="MarginContainer/GameOverContainer/GameOverBox/choicebox/HBoxContainer"]
+modulate = Color(0.439216, 0.870588, 0.564706, 1)
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_bvpn6")
+theme_override_font_sizes/font_size = 30
+text = "																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						YES"
+icon_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/GameOverContainer/GameOverBox/choicebox"]
+layout_mode = 2
+
+[node name="no_button" type="Button" parent="MarginContainer/GameOverContainer/GameOverBox/choicebox/HBoxContainer2"]
+modulate = Color(1, 0.141176, 0.2, 1)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("2_bvpn6")
+theme_override_font_sizes/font_size = 30
+text = "NO"

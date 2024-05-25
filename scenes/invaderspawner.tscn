@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://btfiih8ww3xb5"]
+
+[ext_resource type="Script" path="res://scenes/invaderspawner.gd" id="1_krbh6"]
+
+[node name="invaderspawner" type="Node2D"]
+script = ExtResource("1_krbh6")
+
+[node name="MovementTimer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
+
+[node name="ShotTimer" type="Timer" parent="."]
+autostart = true
